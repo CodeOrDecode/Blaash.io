@@ -11,7 +11,7 @@ const formData = [
   {
     type: "header",
     subtype: "h1",
-    label: "formBuilder in React",
+    label: "FormBuilder in React",
   },
 ];
 
@@ -49,21 +49,62 @@ class FormBuilder extends Component {
     let html = "<html><head><title>Published Form</title></head><body>";
     html += "<form>";
     layoutData.forEach((field) => {
-      // html += `<label>${field.label}</label>`;
       switch (field.type) {
         case "header":
           html += `<${field.subtype}>${field.label}</${field.subtype}>`;
           break;
         case "text":
-          console.log(field)
-          html += `${field.label}<input type="text" style="display: block;  margin-top: 7px;" placeholder="${field.placeholder || ''}"/>`;
+          html += `${field.label}<input type="text" style="display: block;  margin-top: 7px;" placeholder="${field.placeholder || ''}" value="${field.value}" />`;
           break;
 
-          case "checkbox-group":
-        field.values.forEach(option => {
-          html += `<label style="display: block; "><input type="checkbox" value="${option.value}" checked=${option.checked}/> ${option.label}</label><br />`;
-        });
-        break;
+        case "file":
+          console.log(field);
+          html += `<label>${field.label}</label>`;
+          html += `<input type="file" style="display: block; margin-top: 7px;" />`;
+          break;
+
+        case "checkbox-group":
+          html += `<label>${field.label}</label>`;
+          field.values.forEach(option => {
+            html += `<label style="display: block; "><input type="checkbox" value="${option.value}" checked=${option.checked}/> ${option.label}</label><br />`;
+          });
+          break;
+
+        case "date":
+          html += `<label>${field.label}</label>`;
+          html += `<label style="display: block; "><input type="date" value="${field.value}"/></label><br />`;
+          break;
+
+        case "number":
+          html += `<label>${field.label}</label>`;
+          html += `<label style="display: block; "><input type="number" value="${field.value}"/></label><br />`;
+          break;
+        case "paragraph":
+          html += `<${field.subtype}>${field.label}</${field.subtype}>`;
+          break;
+
+        case "radio-group":
+          html += `<label>${field.label}</label>`;
+          field.values.forEach(option => {
+            html += `<label style="display: block;"><input type="radio" name="${field.name}" value="${option.value}" ${option.selected ? 'checked="checked"' : ''}/> ${option.label}</label><br />`;
+          });
+          break;
+
+
+        case "select":
+          html += `<label>${field.label}</label>`;
+          html += `<select name="${field.name}">`;
+          field.values.forEach(option => {
+            html += `<option value="${option.value}" ${option.selected ? 'selected="selected"' : ''}>${option.label}</option>`;
+          });
+          html += `</select><br />`;
+          break;
+
+        case "textarea":
+          html += `<label>${field.label}</label>`;
+          html += `<textarea style="display: block; margin-top: 7px;" placeholder="${field.placeholder || ''}">${field.value || ''}</textarea><br />`;
+          break;
+
         case "button":
           html += `<button style="display: block;" type="button">${field.label}</button>`;
           break;
